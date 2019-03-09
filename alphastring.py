@@ -10,8 +10,9 @@ slength = len(s)
 longastring = ""
 a = 0
 for a in range(0, slength):
-    #if ord(s[a]) < ord(s[a+1]):
-    #    
+    #while ord(s[a]) < ord(s[a+1]):
+    #    longastring += s[a]
+    #    longastring += s[a+1]
     if any (c == s[a] for c in ("a", "e", "i", "o", "u")):
         nvowels += 1
     
