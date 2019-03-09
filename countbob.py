@@ -10,8 +10,8 @@ def bobcount(scheck):
     #pdb.set_trace()
     slength = len(scheck)
     bobs = 0
-    for a in range(0, slength - 3):
-        print(scheck[a:a+3])
+    for a in range(0, slength - 2):
+        print("What is it?: " + str(scheck[a:a+3]))
         if scheck[a:a+3] == "bob":
             bobs += 1
     return bobs
