@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pdb
 #String -> String
 #counts instances of 'bob'
