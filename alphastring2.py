@@ -4,7 +4,7 @@
 #def AlphabeticalString(String):
 #    return SubString
 def main():
-    s = "aemdnvxabcdoiernxkcv"
+    s = "aemdnvxoiernxkcv"
     slength = len(s)
     b = 0
     longastring = ""

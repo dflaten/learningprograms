@@ -2,19 +2,21 @@
 #Float -> Float
 #Given the balance, annualInterestRate, and monthlyPaymentRate calculate the Remaining balance  
 def main():
-float balance = 10,000.00
-float annualInterestRate = .28
-float monthlPaymentRate = .15
-float monthlyInterestRate = annualInterestRate/12
+    balance = 484 
+    annualInterestRate = .2
+    monthlyPaymentRate = .04
 
-float minmonthlypayment = monthlyPaymentRate * previousbalance
-float monthlyUnpaidBalance = PreviousBalance - minmonthly payment
-float updatedbalanceEachMonth =  (Monthly unpaid balance) + (Monthly interest rate x Monthly unpaid balance) 
-index = 0
+    monthlyInterestRate = annualInterestRate/12.0
 
-float previousbalance = balance
+    index = 1
 
-for index in range(0,12):
+    #import pdb; pdb.set_trace()
+    previousbalance = float(balance)
+    for index in range(0,12):
+        previousbalance = previousbalance - (previousbalance * monthlyPaymentRate)
+        previousbalance = previousbalance + (monthlyInterestRate * previousbalance)
+
+    print("Remaining Balance: " + str(float("{0:.2f}".format(previousbalance))))
     
 
 if __name__ == "__main__":
