@@ -2,8 +2,6 @@
 #Takes 10 integers from user and prints largest odd integer
 #def FindLargestOddInt(list[]):
 #    return largestodd
-# PLACEHOLDER - Unit Test One
-# PLACEHOLDER - Unit Test Two
 import sys
 
 usernumbers = []
@@ -19,4 +17,9 @@ usernumbers.sort()
 for number in reversed(usernumbers):
    if number % 2 != 0:
       print ("Largest odd number is: " + str(number))
-           
+      break
+#these don't currntly test due to needing a method to fake a user entering the numbers from the command line.            
+def test_answer():
+    assert FindLargestOddInt(1,2,3,4,5,6,7,8,9,10) == 9
+def test_answer():
+    assert FindLargestOddInt(-5l,2,3,4,5,6,7,8,12,10) == 7
