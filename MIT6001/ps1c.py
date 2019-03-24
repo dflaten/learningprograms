@@ -4,27 +4,32 @@
 def main():
     #Integers, Floats -> Integer
     def MonthsSavingSearch(months_until_buy,dec_accuracy,total_cost, portion_down_payment, annual_salary, semi_annual_raise, investment_return_rate):
+        bisectionsearchsteps = 0
         low = 0
         high = dec_accuracy
+        import pdb; pdb.set_trace()
         savings_rate = (low + high) / 2.0
         while savings_rate in range(dec_accuracy):
-            #bisectionsearchsteps += 1
+            bisectionsearchsteps += 1
             guessmonths = CheckGuess(savings_rate, total_cost, portion_down_payment, annual_salary, semi_annual_raise, investment_return_rate)
             if guessmonths ==  months_until_buy:
-                return savings_rate #Success!
+                error = False
+                return savings_rate, bisectionsearchsteps, error #Success!
             if guessmonths < months_until_buy:
                 high = savings_rate
-                savings_rate = (low +high) / 2.0
+                savings_rate = int((low + high) / 2.0)
             if guessmonths > months_until_buy:
                 low = savings_rate
-                savings_rate = (low +high) / 2.0
-            #Here I need  to account for if a guess can't be found.
-        return savings_rate
-
+                savings_rate = int((low + high) / 2.0)
+        #failure
+        error = True
+        return savings_rate, bisectionsearchsteps, error
+    #Integers, Floates -> Integer
     def CheckGuess(savings_rate, total_cost, portion_down_payment, annual_salary, semi_annual_raise, investment_return_rate):
         nmonths = 0
+        savings_rate = savings_rate * .0001
         current_savings = 0
-        while current_savings < total_cost*portion_down_payment: 
+        while current_savings < total_cost*portion_down_payment and nmonths <= months_until_buy: 
             if nmonths % 6 == 0:
                 if nmonths != 0:
                     annual_salary = annual_salary + annual_salary * semi_annual_raise
@@ -46,9 +51,14 @@ def main():
     investment_return_rate = .04 
     #how many decimal places do you want to be accurate to?
     dec_accuracy = 10000
-    #how many steps in bisection search? 
-    bisectionsearchsteps = 0
-    savings_rate = MonthsSavingSearch(months_until_buy, dec_accuracy, total_cost, portion_down_payment, annual_salary, semi_annual_raise, investment_return_rate)
+    results = MonthsSavingSearch(months_until_buy, dec_accuracy, total_cost, portion_down_payment, annual_salary, semi_annual_raise, investment_return_rate)
+    if results[2] == True:
+        print ('It is not possible to pay the down payment in three years.')
+    else:
+        savings_rate = results[0]
+        bisectionsearchsteps = results[1]
+        print('Best Savings Rate:', savings_rate*.0001)
+        print('Steps in Bisection Search:', bisectionsearchsteps)
     #Sudo code for bisection search
     #Calculate Midpoint and set to savings_rate, savings rate = low + high /2
     #Calculate the value of the function checkguess(midpoint)
@@ -56,7 +66,5 @@ def main():
     #if nmonths > 36 your savings_rate was to low, set savings rate to low, recalculate savings rate with savings_rate = (low + high) /2.0
     #if nmonths < 36 your savings_rate was to high, set savings rate to high, recalculate savings rate with savings_rate = (low +high) /2.0
     #Calculate the value of the function checkguess(midpoint)... repeat as needed.
-    print('Best Savings Rate:', savings_rate*.0001)
-    print('Steps in Bisection Search:', bisectionsearchsteps)
 if __name__ == "__main__":
     main()
