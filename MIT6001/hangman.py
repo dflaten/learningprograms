@@ -60,7 +60,7 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    if all((c in letters_guessed) for c in secret_word:
+    if all((c in secret_word ) for c in letters_guessed:
         return True
     else:
         return False
@@ -75,8 +75,13 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    guessed_word = ""
+    for c in secret_word:
+        if c in letters_guessed:
+            guessed_word.append(c)
+        else:
+            guessed_word.append('_ ')
+    return guessed_word
 
 
 
