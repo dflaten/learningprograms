@@ -91,9 +91,13 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
+    #solution below is inefficient because it allocates space for a new string with each iteration.
+    #Better to go with available_letters = available_letters.translate({ord(c): None for c in 'letters_guessed'})
+    available_letters = string.ascii_lowercase
+    for c in letters_guessed: 
+        if c in available_letters:
+            available_letters = available_letters.replace(c,"")
+    return available_letters 
     
 
 def hangman(secret_word):
