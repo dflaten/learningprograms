@@ -127,9 +127,15 @@ def hangman(secret_word):
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
 
-    pass
-
-
+    guesses = 6
+    letters_remaining = string.ascii_lowercase
+    letter_guess = ''
+    print("Let's play Hangman! The secret word has " + len(secret_word) + " letters in it.")
+    
+    for guesses in range(6):
+        print("You have " + guesses + " letter guesses remaining and these letters to guess from: "+ letters_remaining)
+        while letter_guess not in string.ascii_lowercase:
+            letter_guess = input("Please supply your guess(letter): "
 
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
