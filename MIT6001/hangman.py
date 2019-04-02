@@ -75,6 +75,7 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
+    chosen_word=choose_word(wordlist)
     guessed_word = ""
     for c in secret_word:
         if c in letters_guessed:
@@ -125,18 +126,18 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
 
     guesses = 6
-    letters_remaining = string.ascii_lowercase
+    letters_remaining = ""
     letter_guess = ''
     print("Let's play Hangman! The secret word has " + len(secret_word) + " letters in it.")
     
     for guesses in range(6):
+        letters_remaining = get_available_letters(letter_guess)
         print("You have " + guesses + " letter guesses remaining and these letters to guess from: "+ letters_remaining)
         while letter_guess not in string.ascii_lowercase:
-            letter_guess = input("Please supply your guess(letter): "
-
+            letter_guess = input("Please supply your guess(letter): ")
+         
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
 #(hint: you might want to pick your own
