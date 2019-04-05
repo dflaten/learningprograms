@@ -128,16 +128,26 @@ def hangman(secret_word):
     '''
 
     guesses = 6
+    warnings = 3
     letters_remaining = ""
     letter_guess = ''
     print("Let's play Hangman! The secret word has " + len(secret_word) + " letters in it.")
     
-    for guesses in range(6):
+    print("-------------")
+    while True:
         letters_remaining = get_available_letters(letter_guess)
         print("You have " + guesses + " letter guesses remaining and these letters to guess from: "+ letters_remaining)
-        while letter_guess not in string.ascii_lowercase:
-            letter_guess = input("Please supply your guess(letter): ")
-         
+        letter_guess = (input("Please supply your guess(letter): ")).lower()
+        if not letter_guess.isalpha():
+            if warnings > 0:
+                warnings -= 1
+            else: 
+                guesses -= 1
+                if guesses = 0:
+                    print("You've run out of guesses and lose the game. :(")
+                    break
+        else:
+             
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
 #(hint: you might want to pick your own
