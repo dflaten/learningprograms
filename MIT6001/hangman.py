@@ -131,6 +131,7 @@ def hangman(secret_word):
     warnings = 3
     letters_remaining = ""
     letter_guess = ''
+    letters_guessed = []
     print("Let's play Hangman! The secret word has " + len(secret_word) + " letters in it.")
     
     print("-------------")
@@ -141,12 +142,23 @@ def hangman(secret_word):
         if not letter_guess.isalpha():
             if warnings > 0:
                 warnings -= 1
+                print("You didn't guess a letter and lose a guess, you have " + warnings + "warnings remaining.")
             else: 
                 guesses -= 1
                 if guesses = 0:
                     print("You've run out of guesses and lose the game. :(")
                     break
+                print("You didn't guess a letter and lose a guess.")
         else:
+            if letter guess is in secret_word:
+                if letter_guess is in letters_guessed:
+                    if warnings > 0:
+                        warnings -=1
+                        print("That letter has already been guessed you lose a warning, you have " + warnings + "warinings remaining.")
+                    else:
+                        guesses -=1
+                        print("That letter has already been guessed you lose a guess because you've run out of warnings.")
+                    
              
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
