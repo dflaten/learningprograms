@@ -60,13 +60,13 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    if all((c in secret_word ) for c in letters_guessed:
+    if all((c in letters_guessed) for c in secret_word ):
         return True
     else:
         return False
 
-def test_answer():
-    assert is_word_guessed('bonk', (b,o,n,k) == True
+#def test_answer():
+#    assert is_word_guessed('bonk', (b,o,n,k) == True
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -79,9 +79,9 @@ def get_guessed_word(secret_word, letters_guessed):
     guessed_word = ""
     for c in secret_word:
         if c in letters_guessed:
-            guessed_word.append(c)
+            guessed_word += c
         else:
-            guessed_word.append('_ ')
+            guessed_word += "_ "
     return guessed_word
 
 
@@ -132,34 +132,54 @@ def hangman(secret_word):
     letters_remaining = ""
     letter_guess = ''
     letters_guessed = []
-    print("Let's play Hangman! The secret word has " + len(secret_word) + " letters in it.")
+    vowels = "aeiou"
+    print("Let's play Hangman! The secret word has " + str(len(secret_word)) + " letters in it.")
     
-    print("-------------")
     while True:
-        letters_remaining = get_available_letters(letter_guess)
-        print("You have " + guesses + " letter guesses remaining and these letters to guess from: "+ letters_remaining)
-        letter_guess = (input("Please supply your guess(letter): ")).lower()
-        if not letter_guess.isalpha():
-            if warnings > 0:
-                warnings -= 1
-                print("You didn't guess a letter and lose a guess, you have " + warnings + "warnings remaining.")
-            else: 
-                guesses -= 1
-                if guesses = 0:
-                    print("You've run out of guesses and lose the game. :(")
-                    break
-                print("You didn't guess a letter and lose a guess.")
+        print("-------------")
+        if is_word_guessed(secret_word, letters_guessed):
+            score = guesses * len(secret_word)#Need to update so score is guesses * unique characters in secret_word
+            print("Congratulations, you won!")
+            print("Your total score for this game is: " + str(score))
+            break
+        elif guesses <= 0: 
+            print("Sorry you ran out of guesses, the word was " + secret_word)
+            break
         else:
-            if letter guess is in secret_word:
-                if letter_guess is in letters_guessed:
-                    if warnings > 0:
-                        warnings -=1
-                        print("That letter has already been guessed you lose a warning, you have " + warnings + "warinings remaining.")
+            letters_remaining = get_available_letters(letters_guessed)
+            print("You have " + str(guesses) + " letter guesses remaining and these letters to guess from: "+ letters_remaining)
+            letter_guess = (input("Please supply your guess(letter): ")).lower()
+            if not letter_guess.isalpha():
+                if warnings > 0:
+                    warnings -= 1
+                    print("You didn't guess a letter and lose a guess, you have " + warnings + "warnings remaining.")
+                else: 
+                    guesses -= 1
+                    print("You didn't guess a letter and lose a guess.")
+            else:
+                if letter_guess in secret_word:
+                    if letter_guess in letters_guessed:
+                        if warnings > 0:
+                            warnings -= 1
+                            print("That letter has already been guessed you lose a warning, you have " + warnings + "warinings remaining.")
+                        else:
+                            guesses -= 1
+                            print("That letter has already been guessed you lose a guess because you've run out of warnings.")
+                        
                     else:
-                        guesses -=1
-                        print("That letter has already been guessed you lose a guess because you've run out of warnings.")
-                    
-             
+                        guesses -= 1
+                        letters_guessed.append(letter_guess)
+                        current_word = get_guessed_word(secret_word, letters_guessed)
+                        print("Good guess: " + current_word)
+                else:
+                    if letter_guess in vowels:
+                        current_word = get_guessed_word(secret_word, letters_guessed)
+                        print("Oops! That letter is not in my word: " + current_word)
+                        guesses = guesses - 2
+                    else:
+                        current_word = get_guessed_word(secret_word, letters_guessed)
+                        print("Oops! That letter is not in my word: " + current_word)
+                        guesses -= 1
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
 #(hint: you might want to pick your own
