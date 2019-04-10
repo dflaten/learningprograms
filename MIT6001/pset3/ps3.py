@@ -80,12 +80,20 @@ def get_word_score(word, n):
     n: int >= 0
     returns: int >= 0
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
-
+    word = word.lower()
+    scoreletter = 0
+    for c in word:
+        scoreletter = scoreletter + SCRABBLE_LETTER_VALUES[c]
+    scorelength = 7*len(word) - 3*(n-len(word))
+    if scorelength < 1:
+        scorelength = 1
+    return scoreletter * scorelength
 #
+def test_get_word_medium():
+    assert get_word_score("abba",5) == 200 
+def test_get_word_empty():
+    assert get_word_score("",5) == 0 
 # Make sure you understand how this function works and what it does!
-#
 def display_hand(hand):
     """
     Displays the letters currently in the hand.
