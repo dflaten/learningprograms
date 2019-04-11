@@ -6,6 +6,7 @@
 import math
 import random
 import string
+import copy
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
@@ -164,9 +165,22 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
+    newhand  = copy.deepcopy(hand)
+    word = word.lower()
+    for letter in word:
+        if letter in newhand:
+            if newhand[letter] > 0:
+                newhand [letter] -= 1
+            if newhand[letter] <= 0:
+                del newhand[letter]
+            else:
+                pass
+    return newhand
 
-    pass  # TO DO... Remove this line when you implement this function
-
+def test_update_hand_norm():
+    assert update_hand({'a':2,'b':2,'c':1}, 'abba') == {'c':1} 
+def test_update_hand_caps():
+    assert update_hand({'a':2,'b':2,'c':1}, 'Abba') == {'c':1} 
 #
 # Problem #3: Test word validity
 #
