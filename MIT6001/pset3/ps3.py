@@ -170,7 +170,7 @@ def update_hand(hand, word):
     for letter in word:
         if letter in newhand:
             if newhand[letter] > 0:
-                newhand [letter] -= 1
+                newhand[letter] -= 1
             if newhand[letter] <= 0:
                 del newhand[letter]
             else:
@@ -195,9 +195,30 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    word = word.lower() 
+    newhand  = copy.deepcopy(hand)
+    if word in word_list:
+        for letter in word:
+            if letter in newhand:
+                if newhand[letter] > 0:
+                    newhand[letter] -= 1
+                elif newhand[letter] <= 0:
+                    return False
+            else:
+                return False
+        return True
+    else: 
+        return False
 
-    pass  # TO DO... Remove this line when you implement this function
-
+def testTrue_is_valid_word():
+    wordlist = load_words()
+    assert is_valid_word('abase', {'a':2,'b':2,'c':1,'e':1,'s':1}, wordlist ) == True
+def testNotInWordlist_is_valid_word():
+    wordlist = load_words()
+    assert is_valid_word('abca', {'a':2,'b':2,'c':1,'e':1,'s':1}, wordlist ) == False
+def testNotEnoughLetters_is_valid_word():
+    wordlist = load_words()
+    assert is_valid_word('abase', {'a':1,'b':2,'c':1,'e':1,'s':1}, wordlist ) == False
 #
 # Problem #5: Playing a hand
 #
