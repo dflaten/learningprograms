@@ -13,7 +13,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+        'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10, '*': 0
 }
 
 
@@ -133,17 +133,33 @@ def deal_hand(n):
     
     hand={}
     num_vowels = int(math.ceil(n / 3))
-
+    #making space for wild
+    num_vowels -= 1
+    #adding wild to hand
+    hand.update({'*': 1})
     for i in range(num_vowels):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
     
-    for i in range(num_vowels, n):    
+    for i in range(num_vowels + 1 , n):    
         x = random.choice(CONSONANTS)
         hand[x] = hand.get(x, 0) + 1
     
     return hand
 
+def test_deal_hand():
+    myhand = deal_hand(7)
+    wilds = 0
+    vowels = 0
+    consonants = 0
+    for letter in myhand:
+        if letter in VOWELS:
+            vowels += 1
+        if letter in CONSONANTS:
+            consonants += 1
+        if letter == '*':
+            wilds += 1
+    assert wilds  == 1 and vowels == 2 and consonants == 4
 #
 # Problem #2: Update a hand by removing letters
 #
@@ -195,24 +211,41 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
-    word = word.lower() 
-    newhand  = copy.deepcopy(hand)
-    if word in word_list:
-        for letter in word:
-            if letter in newhand:
-                if newhand[letter] > 0:
-                    newhand[letter] -= 1
-                elif newhand[letter] <= 0:
+    def check_word(word, hand, word_list): 
+        word = word.lower() 
+        newhand  = copy.deepcopy(hand)
+        if word in word_list:
+            for letter in word:
+                if letter in newhand:
+                    if newhand[letter] > 0:
+                        newhand[letter] -= 1
+                    elif newhand[letter] <= 0:
+                        return False
+                else:
                     return False
-            else:
-                return False
-        return True
-    else: 
-        return False
+            return True
+        else: 
+            return False
 
+    wildplace = word.find('*')
+    if wildplace > 0:
+        for vowel in VOWELS: 
+            word = word[0:wildplace] + vowel + word[wildplace + 1:len(word)]
+            replacedhand = copy.deepcopy(hand)
+           #add vowel we are testing to hand
+            replacedhand[vowel] = hand.get(vowel, 0) + 1
+            isword = check_word(word, replacedhand, word_list)
+            if isword:
+                return True
+        return False
+    else: 
+        return check_word(word, hand, word_list)
 def testTrue_is_valid_word():
     wordlist = load_words()
     assert is_valid_word('abase', {'a':2,'b':2,'c':1,'e':1,'s':1}, wordlist ) == True
+def testWildTrue_is_valid_word():
+    wordlist = load_words()
+    assert is_valid_word('ab*se', {'a':1,'b':2,'c':1,'e':1,'s':1,'*':1}, wordlist ) == True
 def testNotInWordlist_is_valid_word():
     wordlist = load_words()
     assert is_valid_word('abca', {'a':2,'b':2,'c':1,'e':1,'s':1}, wordlist ) == False
