@@ -296,39 +296,31 @@ def play_hand(hand, word_list):
       
     """
     
-    # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
     # Keep track of the total score
-    
+    totalscore = 0 
+    while len(hand) > 0:
     # As long as there are still letters left in the hand:
-    
         # Display the hand
-        
+        print("Current Hand: " + str(hand.keys()))
         # Ask user for input
-        
-        # If the input is two exclamation points:
-        
-            # End the game (break out of the loop)
-
-            
-        # Otherwise (the input is not two exclamation points):
-
-            # If the word is valid:
-
-                # Tell the user how many points the word earned,
-                # and the updated total score
-
-            # Otherwise (the word is not valid):
-                # Reject invalid word (print a message)
-                
-            # update the user's hand by removing the letters of their inputted word
-            
-
-    # Game is over (user entered '!!' or ran out of letters),
-    # so tell user the total score
-
-    # Return the total score as result of function
-
-
+        try:
+            userword = (str(input("Enter word or \"!!\" to indicate that you are finished: ")))
+        except ValueError:
+            print("Not an string value...")
+        if userword == '!!':
+            break
+        if is_valid_word(userword, hand, word_list):
+            wordscore = get_word_score(word, n)
+            totalscore = totalscore + wordscore
+            print("\"" + userword + "\"" + " earned " + str(wordscore) + " points. Total: " + str(totalscore) + " points")
+        else:
+            print("That is not a valid word. Please choose another word.")
+        update_hand(hand, userword)
+    if len(hand) <= 0:
+        print("Ran out of letters. Total Score: " + str(totalscore) + " points.")
+    else: 
+        print("Total Score: " + str(totalscore) + " points.")
+    return totalscore
 
 #
 # Problem #6: Playing a game
