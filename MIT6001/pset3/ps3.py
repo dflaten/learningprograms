@@ -353,8 +353,16 @@ def substitute_hand(hand, letter):
     letter: string
     returns: dictionary (string -> int)
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
+    replacedhand = copy.deepcopy(hand)
+   #get random letteruntil letter is one that isn't already in the hand. 
+    while x not in replacedhand:
+        x = random.choice(VOWELS + CONSONANTS )
+    replacedhand[x] = hand.get(x, 0) + 1
+    if replacedhand[letter]
+   #check to see if the letter they provided has more than one in the hand. 
+   #if it does reduce the count by one. 
+   #if it only has one remove the entire letter from the hand. 
+   return newhand
        
     
 def play_game(word_list):
