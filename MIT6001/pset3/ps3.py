@@ -323,11 +323,6 @@ def play_hand(hand, word_list):
     return totalscore
 
 #
-# Problem #6: Playing a game
-# 
-
-
-#
 # procedure you will use to substitute a letter in a hand
 #
 
@@ -395,16 +390,23 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
-    
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
-    
+    handstoplay = 0 
+    totalscore = 0
+    while handstoplay = 0:
+        try: 
+            handstoplay = int(print("Enter total number of hands: "))
+        except ValueError:
+            print("You must inter an integer greater than 0.")
 
+   for n in range (0, handstoplay):
+       hand = deal_hand(HAND_SIZE)
+        #If they haven't substituted a letter yet ask if they want to
+        #If yes substitute
+        #If no play hand
+        #once played ask if they want to replay.
+        #if yes replay hand
+        #once they have finished a hand add score to totalscore 
 
-#
-# Build data structures used for entire session and play game
-# Do not remove the "if __name__ == '__main__':" line - this code is executed
-# when the program is run directly, instead of through an import statement
-#
 if __name__ == '__main__':
     word_list = load_words()
     play_game(word_list)
