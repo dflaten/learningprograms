@@ -353,7 +353,8 @@ def substitute_hand(hand, letter):
     while x not in replacedhand:
         x = random.choice(VOWELS + CONSONANTS )
     replacedhand[x] = hand.get(x, 0) + 1
-    if replacedhand[letter]
+    if replacedhand[letter] in replacedhand:
+
    #check to see if the letter they provided has more than one in the hand. 
    #if it does reduce the count by one. 
    #if it only has one remove the entire letter from the hand. 
@@ -392,6 +393,7 @@ def play_game(word_list):
     """
     handstoplay = 0 
     totalscore = 0
+    substused = False
     while handstoplay = 0:
         try: 
             handstoplay = int(print("Enter total number of hands: "))
@@ -400,13 +402,17 @@ def play_game(word_list):
 
    for n in range (0, handstoplay):
        hand = deal_hand(HAND_SIZE)
-        #If they haven't substituted a letter yet ask if they want to
-        #If yes substitute
-        #If no play hand
-        #once played ask if they want to replay.
-        #if yes replay hand
-        #once they have finished a hand add score to totalscore 
-
+        if not substused: 
+            subrequest = print("Do you want to substitute a letter? (yes/no): ") 
+            if subrequest == 'yes':
+                letter = print("Which letter do you want to substitute? ")
+                substitute_hand(hand, letter)
+        handscore = play_hand(hand, word_list)
+        replaygame = print("Do you want to replay this game?(yes/no) ")
+        if replaygame == 'yes':
+            handscore = play_hand(hand, word_list)
+        totalscore = handscore + totalscore
+    return totalscore
 if __name__ == '__main__':
     word_list = load_words()
     play_game(word_list)
