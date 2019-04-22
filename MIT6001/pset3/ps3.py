@@ -1,4 +1,4 @@
-# 6.0001 Problem Set 3
+#'findAnEven called with list containing all odds 6.0001 Problem Set 3
 #
 # The 6.0001 Word Game
 # Created by: Kevin Luu <luuk> and Jenna Wiens <jwiens>
@@ -301,7 +301,8 @@ def play_hand(hand, word_list):
     while len(hand) > 0:
     # As long as there are still letters left in the hand:
         # Display the hand
-        print("Current Hand: " + str(hand.keys()))
+        print("Current Hand: ")
+        display_hand(hand)
         # Ask user for input
         try:
             userword = (str(input("Enter word or \"!!\" to indicate that you are finished: ")))
@@ -310,12 +311,12 @@ def play_hand(hand, word_list):
         if userword == '!!':
             break
         if is_valid_word(userword, hand, word_list):
-            wordscore = get_word_score(word, n)
+            wordscore = get_word_score(userword, len(hand))
             totalscore = totalscore + wordscore
             print("\"" + userword + "\"" + " earned " + str(wordscore) + " points. Total: " + str(totalscore) + " points")
         else:
             print("That is not a valid word. Please choose another word.")
-        update_hand(hand, userword)
+        hand = update_hand(hand, userword)
     if len(hand) <= 0:
         print("Ran out of letters. Total Score: " + str(totalscore) + " points.")
     else: 
@@ -349,18 +350,22 @@ def substitute_hand(hand, letter):
     returns: dictionary (string -> int)
     """
     replacedhand = copy.deepcopy(hand)
-   #get random letteruntil letter is one that isn't already in the hand. 
-    while x not in replacedhand:
+    loops = replacedhand[letter]
+    if letter not in hand:
+        return hand
+    for y in range(0, loops):
+        #get random letteruntil letter is one that isn't already in the hand. 
         x = random.choice(VOWELS + CONSONANTS )
-    replacedhand[x] = hand.get(x, 0) + 1
-    if replacedhand[letter] in replacedhand:
-
-   #check to see if the letter they provided has more than one in the hand. 
-   #if it does reduce the count by one. 
-   #if it only has one remove the entire letter from the hand. 
-   return newhand
+        while x in replacedhand:
+            x = random.choice(VOWELS + CONSONANTS )
+        replacedhand[x] = replacedhand.get(x, 0) + 1
+        if replacedhand[letter] > 0:
+            replacedhand[letter] -= 1
+        if replacedhand[letter] <= 0:
+            del replacedhand[letter]
+        y += 1 
+    return replacedhand
        
-    
 def play_game(word_list):
     """
     Allow the user to play a series of hands
@@ -394,21 +399,22 @@ def play_game(word_list):
     handstoplay = 0 
     totalscore = 0
     substused = False
-    while handstoplay = 0:
-        try: 
-            handstoplay = int(print("Enter total number of hands: "))
-        except ValueError:
-            print("You must inter an integer greater than 0.")
+    try: 
+        handstoplay = int(input("Enter total number of hands: "))
+    except ValueError:
+        print("You must inter an integer greater than 0.")
 
-   for n in range (0, handstoplay):
-       hand = deal_hand(HAND_SIZE)
+    for n in range (0, handstoplay):
+        hand = deal_hand(HAND_SIZE)
+        print("Current hand: ")
+        display_hand(hand)
         if not substused: 
-            subrequest = print("Do you want to substitute a letter? (yes/no): ") 
+            subrequest = input("Do you want to substitute a letter? (yes/no): ") 
             if subrequest == 'yes':
-                letter = print("Which letter do you want to substitute? ")
-                substitute_hand(hand, letter)
+                letter = input("Which letter do you want to substitute? ")
+                hand = substitute_hand(hand, letter)
         handscore = play_hand(hand, word_list)
-        replaygame = print("Do you want to replay this game?(yes/no) ")
+        replaygame = input("Do you want to replay this game?(yes/no) ")
         if replaygame == 'yes':
             handscore = play_hand(hand, word_list)
         totalscore = handscore + totalscore
