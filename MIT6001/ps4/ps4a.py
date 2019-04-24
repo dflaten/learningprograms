@@ -1,6 +1,6 @@
 # Problem Set 4A
-
-def get_permutations(sequence):
+  perms = []
+  get_permutations(sequence):
     '''
     Enumerate all permutations of a given string
 
@@ -19,21 +19,21 @@ def get_permutations(sequence):
     Note: depending on your implementation, you may return the permutations in
     a different order than what is listed here.
     '''
-    if len(sequence) == 1:
-        return sequence
-    elif len(sequence) == 2:
-        #swap [0] and [1]
-        newsequence = sequence[1] + sequence[0]
-        return newsequence
-    else:
-        return newsequence = sequence[0] + get_permutations(sequence[0:]) 
+        
+    if len(sequence) == 2:
+#       newsequence = sequence[1] + sequence[0]
+#       return newsequence
+    else: 
+        for c in sequence:
+
+            return newsequence = c + get_permutations(sequence[1:len(sequence)]) 
 
 if __name__ == '__main__':
-#    #EXAMPLE
-#    example_input = 'abc'
-#    print('Input:', example_input)
-#    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
-#    print('Actual Output:', get_permutations(example_input))
+    #EXAMPLE
+    example_input = 'abc'
+    print('Input:', example_input)
+    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
+    print('Actual Output:', get_permutations(example_input))
     
 #    # Put three example test cases here (for your sanity, limit your inputs
 #    to be three characters or fewer as you will have n! permutations for a 
