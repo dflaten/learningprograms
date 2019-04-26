@@ -1,5 +1,4 @@
 # Problem Set 4A
-  perms = []
   get_permutations(sequence):
     '''
     Enumerate all permutations of a given string
@@ -19,15 +18,16 @@
     Note: depending on your implementation, you may return the permutations in
     a different order than what is listed here.
     '''
-        
-    if len(sequence) == 2:
-#       newsequence = sequence[1] + sequence[0]
-#       return newsequence
-    else: 
-        for c in sequence:
-
-            return newsequence = c + get_permutations(sequence[1:len(sequence)]) 
-
+    perms = []
+    if len(sequence) == 0:
+        #should raise an error here
+        return sequence
+    if len(sequence) == 1:
+        return sequence
+    for c in sequence:
+        #create new sequence without c
+        #create list of sequences with c inserted at every position
+        #check and see if the items in this list are in perms, if not add it to perms
 if __name__ == '__main__':
     #EXAMPLE
     example_input = 'abc'
