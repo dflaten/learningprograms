@@ -1,43 +1,39 @@
 # Problem Set 4A
-  get_permutations(sequence):
-    '''
-    Enumerate all permutations of a given string
-
-    sequence (string): an arbitrary string to permute. Assume that it is a
-    non-empty string.  
-
-    You MUST use recursion for this part. Non-recursive solutions will not be
-    accepted.
-
-    Returns: a list of all permutations of sequence
-
-    Example:
-    >>> get_permutations('abc')
-    ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
-
-    Note: depending on your implementation, you may return the permutations in
-    a different order than what is listed here.
-    '''
-    perms = []
-    if len(sequence) == 0:
-        #should raise an error here
-        return sequence
-    if len(sequence) == 1:
-        return sequence
-    for c in sequence:
-        #create new sequence without c
-        #create list of sequences with c inserted at every position
-        #check and see if the items in this list are in perms, if not add it to perms
+# Got stuck on this one so looked up several solutions and worked out how they solved the problem
+def get_permutations_onechar(string):
+    permutation_list = []
+    if len(string) == 1:
+        return [string]
+    else:
+        for char in string:
+            [permutation_list.append(char + a) for a in get_permutations_onechar(string.replace(char, ""))]
+    return permutation_list
+def f(s):
+    if len(s) == 2:
+        X = [s, (s[1] + s[0])]
+        return X
+    else:
+        list1 = []
+        for i in range(0, len(s)):
+            Y = f(s[0:i] + s[i+1: len(s)])
+            for j in Y:
+                list1.append(s[i] + j)
+        return list1
 if __name__ == '__main__':
     #EXAMPLE
     example_input = 'abc'
     print('Input:', example_input)
     print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
-    print('Actual Output:', get_permutations(example_input))
-    
-#    # Put three example test cases here (for your sanity, limit your inputs
-#    to be three characters or fewer as you will have n! permutations for a 
-#    sequence of length n)
-
-    pass #delete this line and replace with your code here
+    print('Actual Output:', get_permutations_onechar(example_input))
+    s = 'abc'
+    print('Input:', s)
+    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
+    print('Actual Output:', f(s))
+'''
+Possible solutions to this problem include: 
+    1) get_permutations_onechar - recursing the string down to one character for every character in the string
+    and adding it to the list, 
+    2) f - take the first character off of the string and then recursively split the string into two haves until you get down to a string length of 2. Then return a list
+    with the original string and the reverse of that string. The strings are then rebuilt and added to the list. 
+'''
 
