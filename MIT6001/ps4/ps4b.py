@@ -1,9 +1,4 @@
-# Problem Set 4B
-# Name: <your name here>
-# Collaborators:
-# Time Spent: x:xx
-
-import string
+import string, copy
 
 ### HELPER CODE ###
 def load_words(file_name):
@@ -70,7 +65,8 @@ class Message(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME) 
 
     def get_message_text(self):
         '''
@@ -78,7 +74,7 @@ class Message(object):
         
         Returns: self.message_text
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text
 
     def get_valid_words(self):
         '''
@@ -87,8 +83,9 @@ class Message(object):
         
         Returns: a COPY of self.valid_words
         '''
-        pass #delete this line and replace with your code here
-
+        mycopy = copy.copy(self.valid_words)
+        return mycopy
+    
     def build_shift_dict(self, shift):
         '''
         Creates a dictionary that can be used to apply a cipher to a letter.
@@ -103,8 +100,14 @@ class Message(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        pass #delete this line and replace with your code here
-
+        #initialize my dictionary with all lower/upper letters matched to empty char
+        mydict = dict.fromkeys(mylower.ascii_lowercase + myupper.ascii_uppercase, '')
+        for i in mydict: 
+            #this needs to be changed to access the keys and values appropriately
+           if ord(mydict[i]) >= ord('a') and ord(mydict[i]) <= ord('z'):
+              mydict[i] = (chr((((ord(mydict[i]) + k - 97) % 26) + 97)),end="")#encrypt each letter in the string and print
+           elif ord(mydict[i]) >= ord('a') and ord(mydict[i]) <= ord('z'):
+               print (chr((((ord(mydict[i])+ k - 65) % 26) + 65)),end="" )#encrypt each letter in the string and print
     def apply_shift(self, shift):
         '''
         Applies the Caesar Cipher to self.message_text with the input shift.
@@ -143,7 +146,7 @@ class PlaintextMessage(Message):
         
         Returns: self.shift
         '''
-        pass #delete this line and replace with your code here
+        return self.shift
 
     def get_encryption_dict(self):
         '''
@@ -159,7 +162,7 @@ class PlaintextMessage(Message):
         
         Returns: self.message_text_encrypted
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text_encrypted
 
     def change_shift(self, shift):
         '''
