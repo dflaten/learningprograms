@@ -102,12 +102,14 @@ class Message(object):
         '''
         #initialize my dictionary with all lower/upper letters matched to empty char
         mydict = dict.fromkeys(mylower.ascii_lowercase + myupper.ascii_uppercase, '')
-        for i in mydict: 
-            #this needs to be changed to access the keys and values appropriately
-           if ord(mydict[i]) >= ord('a') and ord(mydict[i]) <= ord('z'):
-              mydict[i] = (chr((((ord(mydict[i]) + k - 97) % 26) + 97)),end="")#encrypt each letter in the string and print
-           elif ord(mydict[i]) >= ord('a') and ord(mydict[i]) <= ord('z'):
-               print (chr((((ord(mydict[i])+ k - 65) % 26) + 65)),end="" )#encrypt each letter in the string and print
+        for i in mydict.keys(): 
+            #Take the key for each dictionary item, apply the shift to it and assign that value to the key pair
+            if ord(mydict.keys(i)) >= ord('a') and ord(mydict.keys(i)) <= ord('z'):
+                mydict[i] = chr((((ord(mydict.keys(i)) + shift - 97) % 26) + 97))
+            elif ord(mydict.keys(i)) >= ord('A') and ord(mydict.keys(i)) <= ord('Z'):
+                mydict[i] = chr((((ord(mydict.keys(i)) + shift - 65) % 26) + 65))
+        return mydict
+
     def apply_shift(self, shift):
         '''
         Applies the Caesar Cipher to self.message_text with the input shift.
