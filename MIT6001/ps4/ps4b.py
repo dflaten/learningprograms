@@ -140,7 +140,9 @@ class PlaintextMessage(Message):
             self.message_text_encrypted (string, created using shift)
 
         '''
-        pass #delete this line and replace with your code here
+        self.shift = shift
+        self.encryption_dict = build_shift_dict(shift)
+        self.message_text_encrypted =  get_message_text_encrypted(text)
 
     def get_shift(self):
         '''
@@ -156,7 +158,8 @@ class PlaintextMessage(Message):
         
         Returns: a COPY of self.encryption_dict
         '''
-        pass #delete this line and replace with your code here
+        copy_encryption_dict = copy.deepcopy(self.encryption_dict)
+        return copy_encryption_dict
 
     def get_message_text_encrypted(self):
         '''
@@ -176,8 +179,9 @@ class PlaintextMessage(Message):
 
         Returns: nothing
         '''
-        pass #delete this line and replace with your code here
-
+        self.shift = shift
+        self.encryption_dict = build_shift_dict(shift)
+        self.message_text_encrypted =  get_message_text_encrypted(text)
 
 class CiphertextMessage(Message):
     def __init__(self, text):
@@ -190,7 +194,8 @@ class CiphertextMessage(Message):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME) 
 
     def decrypt_message(self):
         '''
