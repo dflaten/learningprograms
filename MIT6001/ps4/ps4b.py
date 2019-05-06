@@ -222,18 +222,22 @@ class CiphertextMessage(Message):
         #used to keep track of how many words each shift produces
         shift_words_dict = dict.fromkeys(range(0,25))
         for shift in range(26):
-            test_shifted_message = self.message_text.apply_shift(shift)    
+            test_shifted_message = self.message_text
+            test_shifted_message = test_shifted_message.apply_shift(shift)    
             for word in test_shifted_message:  
                 if is_word(WORDLIST_FILENAME, word):
                     shift_words_dict[shift] += 1
         most_words_shift = (max(shift_words_dict, key=shift_words_dict.get)
-        #is this valid based on what I know from line 225?
-        best_decrypted_message = self.message_text.apply_shift(most_words_shift) 
-        return (most_words_shift, best_decrypted_message)
+        #This is creating a invalid syntax error, how do functions inside an object
+        #class work with it's self?
+        self.apply_shift(most_words_shift) 
+        return (most_words_shift, self.message_text)
     def test_decrypt_message():
         #create cypted message
+        testmessage = PlaintextMessage("message will self destruct", 3)
+        mymessage = testmessage.decrypt_message()
         #try to decrypt it, what do we get? 
-        assert decrypt_message()== 200 
+        assert mymessage[1] == "message will self destruct"
 if __name__ == '__main__':
 
 #    #Example test case (PlaintextMessage)
