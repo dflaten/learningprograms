@@ -122,7 +122,12 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        shift_dict = build_shift_dict(shift)
+        new_message_text = ''
+        for c in self.message_text:
+            new_message_text = new_message_text + shift_dict[c]
+        self.message_text = new_message_text
+        return self.message_text
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
@@ -213,8 +218,22 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        pass #delete this line and replace with your code here
-
+        shift = 0
+        #used to keep track of how many words each shift produces
+        shift_words_dict = dict.fromkeys(range(0,25))
+        for shift in range(26):
+            test_shifted_message = self.message_text.apply_shift(shift)    
+            for word in test_shifted_message:  
+                if is_word(WORDLIST_FILENAME, word):
+                    shift_words_dict[shift] += 1
+        most_words_shift = (max(shift_words_dict, key=shift_words_dict.get)
+        #is this valid based on what I know from line 225?
+        best_decrypted_message = self.message_text.apply_shift(most_words_shift) 
+        return (most_words_shift, best_decrypted_message)
+    def test_decrypt_message():
+        #create cypted message
+        #try to decrypt it, what do we get? 
+        assert decrypt_message()== 200 
 if __name__ == '__main__':
 
 #    #Example test case (PlaintextMessage)
