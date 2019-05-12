@@ -101,13 +101,13 @@ class Message(object):
                  another letter (string). 
         '''
         #initialize my dictionary with all lower/upper letters matched to empty char
-        mydict = dict.fromkeys(mylower.ascii_lowercase + myupper.ascii_uppercase, '')
+        mydict = dict.fromkeys(string.ascii_lowercase + string.ascii_uppercase, '')
         for i in mydict.keys(): 
             #Take the key for each dictionary item, apply the shift to it and assign that value to the key pair
-            if ord(mydict.keys(i)) >= ord('a') and ord(mydict.keys(i)) <= ord('z'):
-                mydict[i] = chr((((ord(mydict.keys(i)) + shift - 97) % 26) + 97))
-            elif ord(mydict.keys(i)) >= ord('A') and ord(mydict.keys(i)) <= ord('Z'):
-                mydict[i] = chr((((ord(mydict.keys(i)) + shift - 65) % 26) + 65))
+            if ord(i) >= ord('a') and ord(i) <= ord('z'):
+                mydict[i] = chr((((ord(i) + shift - 97) % 26) + 97))
+            elif ord(i) >= ord('A') and ord(i) <= ord('Z'):
+                mydict[i] = chr((((ord(i) + shift - 65) % 26) + 65))
         return mydict
 
     def apply_shift(self, shift):
@@ -122,12 +122,11 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        shift_dict = build_shift_dict(shift)
+        shift_dict = self.build_shift_dict(shift)
         new_message_text = ''
         for c in self.message_text:
             new_message_text = new_message_text + shift_dict[c]
-        self.message_text = new_message_text
-        return self.message_text
+        return new_message_text
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
@@ -146,7 +145,7 @@ class PlaintextMessage(Message):
 
         '''
         self.shift = shift
-        self.encryption_dict = build_shift_dict(shift)
+        self.encryption_dict = self.build_shift_dict(shift)
         self.message_text_encrypted =  get_message_text_encrypted(text)
 
     def get_shift(self):
@@ -222,22 +221,18 @@ class CiphertextMessage(Message):
         #used to keep track of how many words each shift produces
         shift_words_dict = dict.fromkeys(range(0,25))
         for shift in range(26):
-            test_shifted_message = self.message_text
+            test_shifted_message = self
             test_shifted_message = test_shifted_message.apply_shift(shift)    
+            shift_words_dict[shift] = 0
             for word in test_shifted_message:  
                 if is_word(WORDLIST_FILENAME, word):
                     shift_words_dict[shift] += 1
-        most_words_shift = (max(shift_words_dict, key=shift_words_dict.get)
+        most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
         #This is creating a invalid syntax error, how do functions inside an object
         #class work with it's self?
-        self.apply_shift(most_words_shift) 
-        return (most_words_shift, self.message_text)
-    def test_decrypt_message():
-        #create cypted message
-        testmessage = PlaintextMessage("message will self destruct", 3)
-        mymessage = testmessage.decrypt_message()
-        #try to decrypt it, what do we get? 
-        assert mymessage[1] == "message will self destruct"
+        mytranslation = self.apply_shift(most_words_shift) 
+        return most_words_shift, mytranslation
+
 if __name__ == '__main__':
 
 #    #Example test case (PlaintextMessage)
@@ -245,13 +240,19 @@ if __name__ == '__main__':
 #    print('Expected Output: jgnnq')
 #    print('Actual Output:', plaintext.get_message_text_encrypted())
 #
-#    #Example test case (CiphertextMessage)
-#    ciphertext = CiphertextMessage('jgnnq')
-#    print('Expected Output:', (24, 'hello'))
-#    print('Actual Output:', ciphertext.decrypt_message())
+    #Example test case (CiphertextMessage)
+    ciphertext = CiphertextMessage('jgnnq')
+    print('Expected Output:', (24, 'hello'))
+    print('Actual Output:', ciphertext.decrypt_message())
 
     #TODO: WRITE YOUR TEST CASES HERE
+    
+    def test_decrypt_message():
+        #create cypted message
+        testmessage = PlaintextMessage("message will self destruct", 3)
+        mymessage = testmessage.decrypt_message()
+        #try to decrypt it, what do we get? 
+        assert mymessage[1] == "message will self destruct"
 
     #TODO: best shift value and unencrypted story 
     
-    pass #delete this line and replace with your code here
