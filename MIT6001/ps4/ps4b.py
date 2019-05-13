@@ -39,7 +39,9 @@ def is_word(word_list, word):
     '''
     word = word.lower()
     word = word.strip(" !@#$%^&*()-_+={}[]|\:;'<>?,./\"")
-    return word in word_list
+    if word in word_list:
+        return True 
+    return False
 
 def get_story_string():
     """
@@ -125,7 +127,10 @@ class Message(object):
         shift_dict = self.build_shift_dict(shift)
         new_message_text = ''
         for c in self.message_text:
-            new_message_text = new_message_text + shift_dict[c]
+            if c.isupper() or c.islower() :
+                new_message_text = new_message_text + shift_dict[c]
+            else:
+                new_message_text = new_message_text + c
         return new_message_text
 
 class PlaintextMessage(Message):
@@ -144,9 +149,10 @@ class PlaintextMessage(Message):
             self.message_text_encrypted (string, created using shift)
 
         '''
+        Message.__init__(self, text)
         self.shift = shift
         self.encryption_dict = self.build_shift_dict(shift)
-        self.message_text_encrypted =  get_message_text_encrypted(text)
+        self.message_text_encrypted =  self.apply_shift(shift)
 
     def get_shift(self):
         '''
@@ -224,8 +230,9 @@ class CiphertextMessage(Message):
             test_shifted_message = self
             test_shifted_message = test_shifted_message.apply_shift(shift)    
             shift_words_dict[shift] = 0
-            for word in test_shifted_message:  
-                if is_word(WORDLIST_FILENAME, word):
+            words = test_shifted_message.split()
+            for word in words:  
+                if is_word(self.valid_words, word):
                     shift_words_dict[shift] += 1
         most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
         #This is creating a invalid syntax error, how do functions inside an object
@@ -235,24 +242,21 @@ class CiphertextMessage(Message):
 
 if __name__ == '__main__':
 
-#    #Example test case (PlaintextMessage)
+##    #Example test case (PlaintextMessage)
 #    plaintext = PlaintextMessage('hello', 2)
 #    print('Expected Output: jgnnq')
 #    print('Actual Output:', plaintext.get_message_text_encrypted())
-#
-    #Example test case (CiphertextMessage)
-    ciphertext = CiphertextMessage('jgnnq')
-    print('Expected Output:', (24, 'hello'))
-    print('Actual Output:', ciphertext.decrypt_message())
+##
+#    #Example test case (CiphertextMessage)
+#    ciphertext = CiphertextMessage('jgnnq')
+#    print('Expected Output:', (24, 'hello'))
+#    print('Actual Output:', ciphertext.decrypt_message())
 
     #TODO: WRITE YOUR TEST CASES HERE
     
-    def test_decrypt_message():
-        #create cypted message
-        testmessage = PlaintextMessage("message will self destruct", 3)
-        mymessage = testmessage.decrypt_message()
-        #try to decrypt it, what do we get? 
-        assert mymessage[1] == "message will self destruct"
 
     #TODO: best shift value and unencrypted story 
     
+    storystring = get_story_string()
+    cipherstory = CiphertextMessage(storystring)
+    print(cipherstory.decrypt_message())
