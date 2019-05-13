@@ -1,9 +1,6 @@
 # Problem Set 4C
-# Name: <your name here>
-# Collaborators:
-# Time Spent: x:xx
 
-import string
+import string, copy
 from ps4a import get_permutations
 
 ### HELPER CODE ###
@@ -70,15 +67,16 @@ class SubMessage(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
-    
+        self.message_text = text        
+        self.valid_words = load_words(WORDLIST_FILENAME)
+
     def get_message_text(self):
         '''
         Used to safely access self.message_text outside of the class
         
         Returns: self.message_text
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text
 
     def get_valid_words(self):
         '''
@@ -87,7 +85,7 @@ class SubMessage(object):
         
         Returns: a COPY of self.valid_words
         '''
-        pass #delete this line and replace with your code here
+        copyvalid_words = copy.copy(self.valid_words)
                 
     def build_transpose_dict(self, vowels_permutation):
         '''
@@ -132,8 +130,10 @@ class EncryptedSubMessage(SubMessage):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
-
+        SubMessage.__init__(self,text)
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME)
+        
     def decrypt_message(self):
         '''
         Attempt to decrypt the encrypted message 
@@ -152,7 +152,21 @@ class EncryptedSubMessage(SubMessage):
         
         Hint: use your function from Part 4A
         '''
-        pass #delete this line and replace with your code here
+        #using my function from 4b. What do we need to adjust?
+        shift = 0
+        #used to keep track of how many words each shift produces
+        shift_words_dict = dict.fromkeys(range(0,25))
+        for shift in range(26):
+            test_shifted_message = self
+            test_shifted_message = test_shifted_message.apply_shift(shift)    
+            shift_words_dict[shift] = 0
+            words = test_shifted_message.split()
+            for word in words:  
+                if is_word(self.valid_words, word):
+                    shift_words_dict[shift] += 1
+        most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
+        mytranslation = self.apply_shift(most_words_shift) 
+        return mytranslation
     
 
 if __name__ == '__main__':

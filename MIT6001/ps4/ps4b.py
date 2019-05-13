@@ -235,8 +235,6 @@ class CiphertextMessage(Message):
                 if is_word(self.valid_words, word):
                     shift_words_dict[shift] += 1
         most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
-        #This is creating a invalid syntax error, how do functions inside an object
-        #class work with it's self?
         mytranslation = self.apply_shift(most_words_shift) 
         return most_words_shift, mytranslation
 
