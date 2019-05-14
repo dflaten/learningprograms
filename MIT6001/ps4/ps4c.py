@@ -85,7 +85,8 @@ class SubMessage(object):
         
         Returns: a COPY of self.valid_words
         '''
-        copyvalid_words = copy.copy(self.valid_words)
+        copy_valid_words = copy.copy(self.valid_words)
+        return copy_valid_words
                 
     def build_transpose_dict(self, vowels_permutation):
         '''
@@ -106,9 +107,14 @@ class SubMessage(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        
-        pass #delete this line and replace with your code here
-    
+        mydict = dict.fromkeys(VOWELS_LOWER + VOWELS_UPPER + CONSONANTS_LOWER + CONSONANTS_UPPER)
+        for i in mydict.keys():
+            mydict[i] = i            
+        #change the below to iterate over the VOWELS_LOW/VOWELS_UP associate a char with each. 
+        mydict['a'] = vowels_permutation[0]
+        mydict['A'] = vowels_permutation[0].upper() 
+        return mydict
+
     def apply_transpose(self, transpose_dict):
         '''
         transpose_dict (dict): a transpose dictionary
