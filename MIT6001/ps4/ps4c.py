@@ -110,9 +110,15 @@ class SubMessage(object):
         mydict = dict.fromkeys(VOWELS_LOWER + VOWELS_UPPER + CONSONANTS_LOWER + CONSONANTS_UPPER)
         for i in mydict.keys():
             mydict[i] = i            
-        #change the below to iterate over the VOWELS_LOW/VOWELS_UP associate a char with each. 
-        mydict['a'] = vowels_permutation[0]
-        mydict['A'] = vowels_permutation[0].upper() 
+        #used to track what place in the string we are at.
+        numchar = 0
+        for c in vowels_permutation:
+            if c.isupper():
+                mydict[VOWELS_UPPER[numchar]] = c
+                numchar += 1
+            else:
+                mydict[VOWELS_LOWER[numchar]] = c
+                numchar += 1
         return mydict
 
     def apply_transpose(self, transpose_dict):
@@ -122,8 +128,13 @@ class SubMessage(object):
         Returns: an encrypted version of the message text, based 
         on the dictionary
         '''
-        
-        pass #delete this line and replace with your code here
+        new_message_text = ''
+        for c in self.message_text:
+            if c.isupper() or c.islower() :
+                new_message_text = new_message_text + transpose_dict[c]
+            else:
+                new_message_text = new_message_text + c
+        return new_message_text
         
 class EncryptedSubMessage(SubMessage):
     def __init__(self, text):
@@ -160,21 +171,24 @@ class EncryptedSubMessage(SubMessage):
         '''
         #using my function from 4b. What do we need to adjust?
         shift = 0
-        #used to keep track of how many words each shift produces
+        #dict used to keep track of how many words each shift produces
         shift_words_dict = dict.fromkeys(range(0,25))
-        for shift in range(26):
+        vowelperms = get_permutations(VOWELS_LOWER)
+        for perm in vowelperms:
             test_shifted_message = self
-            test_shifted_message = test_shifted_message.apply_shift(shift)    
+            test_shifted_message = test_shifted_message.apply_transpose(perm)    
             shift_words_dict[shift] = 0
             words = test_shifted_message.split()
             for word in words:  
                 if is_word(self.valid_words, word):
                     shift_words_dict[shift] += 1
         most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
-        mytranslation = self.apply_shift(most_words_shift) 
-        return mytranslation
+        if most_words_shift == 0:
+            return self.message_text
+        else:
+            mytranslation = self.apply_shift(most_words_shift) 
+            return mytranslation
     
-
 if __name__ == '__main__':
 
     # Example test case

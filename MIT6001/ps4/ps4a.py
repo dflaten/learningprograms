@@ -1,13 +1,14 @@
 # Problem Set 4A
 # Got stuck on this one so looked up several solutions and worked out how they solved the problem
-def get_permutations_onechar(string):
+def get_permutations(string):
     permutation_list = []
     if len(string) == 1:
         return [string]
     else:
         for char in string:
-            [permutation_list.append(char + a) for a in get_permutations_onechar(string.replace(char, ""))]
+            [permutation_list.append(char + a) for a in get_permutations(string.replace(char, ""))]
     return permutation_list
+
 def f(s):
     if len(s) == 2:
         X = [s, (s[1] + s[0])]
