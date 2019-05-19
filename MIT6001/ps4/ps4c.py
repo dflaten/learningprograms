@@ -113,12 +113,10 @@ class SubMessage(object):
         #used to track what place in the string we are at.
         numchar = 0
         for c in vowels_permutation:
-            if c.isupper():
-                mydict[VOWELS_UPPER[numchar]] = c
-                numchar += 1
-            else:
-                mydict[VOWELS_LOWER[numchar]] = c
-                numchar += 1
+        #assumes the vowels in lower and upper are in the same order/length
+            mydict[VOWELS_LOWER[numchar]] = c
+            mydict[VOWELS_UPPER[numchar]] = c.upper()
+            numchar += 1
         return mydict
 
     def apply_transpose(self, transpose_dict):
@@ -169,24 +167,25 @@ class EncryptedSubMessage(SubMessage):
         
         Hint: use your function from Part 4A
         '''
-        #using my function from 4b. What do we need to adjust?
-        shift = 0
-        #dict used to keep track of how many words each shift produces
-        shift_words_dict = dict.fromkeys(range(0,25))
         vowelperms = get_permutations(VOWELS_LOWER)
+        #dict used to keep track of how many words each shift produces
+        shift_words_dict = dict.fromkeys(vowelperms)
         for perm in vowelperms:
             test_shifted_message = self
-            test_shifted_message = test_shifted_message.apply_transpose(perm)    
-            shift_words_dict[shift] = 0
+            transpose_dict = test_shifted_message.build_transpose_dict(perm)
+            test_shifted_message = test_shifted_message.apply_transpose(transpose_dict)    
+            shift_words_dict[perm] = 0
             words = test_shifted_message.split()
             for word in words:  
                 if is_word(self.valid_words, word):
-                    shift_words_dict[shift] += 1
+                    shift_words_dict[perm] += 1
         most_words_shift = (max(shift_words_dict, key=shift_words_dict.get))
         if most_words_shift == 0:
             return self.message_text
         else:
-            mytranslation = self.apply_shift(most_words_shift) 
+            #get the largest number of words and create a dict
+            biggest_perm = self.build_transpose_dict(max(shift_words_dict.keys(), key=(lambda key: shift_words_dict[key])))
+            mytranslation = self.apply_transpose(biggest_perm) 
             return mytranslation
     
 if __name__ == '__main__':
@@ -201,4 +200,11 @@ if __name__ == '__main__':
     enc_message = EncryptedSubMessage(message.apply_transpose(enc_dict))
     print("Decrypted message:", enc_message.decrypt_message())
      
-    #TODO: WRITE YOUR TEST CASES HERE
+    messagetwo = SubMessage("encrypt my wOrds!!")
+    permutationtwo = "ioeua"
+    enc_dicttwo = messagetwo.build_transpose_dict(permutationtwo)
+    print(enc_dicttwo)
+    print("Original message:", messagetwo.get_message_text(), "Permutation:", permutationtwo)
+    print("Actual encryption:", messagetwo.apply_transpose(enc_dicttwo))
+    enc_messagetwo = EncryptedSubMessage(messagetwo.apply_transpose(enc_dicttwo))
+    print("Decrypted message:", enc_messagetwo.decrypt_message())
