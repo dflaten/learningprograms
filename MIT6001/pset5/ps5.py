@@ -101,7 +101,17 @@ class PhraseTrigger(Trigger):
     #returns true if the object string, phrase is in string text
     def is_phrase_in(text):
         text = text.lower()
+        #Need to split but any punctuation or space
+        textwords = text.split(string.punctuation)
+        phrasewords = self.phrase.split()
+        #look for first word in phrasewords in textwords
+        #then look for next words in remaining phrase words
+        #then keep looking for the next until you are at the end of phrase words
 
+    def test_is_phrase_in():
+        exampletrigger = PhraseTrigger('my phrase')
+        assert exampletrigger.is_phrase_in('is my phrase here')== True 
+    
 # Problem 3
 # TODO: TitleTrigger
 
