@@ -111,6 +111,7 @@ class PhraseTrigger(Trigger):
                 for word in myphrase:
                     if word in mytext:
                         return search_for_phrase(mytext[word:], myphrase)
+            return True
                     else: 
                         return False
             return False
