@@ -104,6 +104,10 @@ class PhraseTrigger(Trigger):
         #Need to split but any punctuation or space
         textwords = text.split(string.punctuation)
         phrasewords = self.phrase.split()
+        def check_phrase(words_to_check, phrase):
+            if len(phrase) == 0:
+                return False
+            
         #look for first word in phrasewords in textwords
         #then look for next words in remaining phrase words
         #then keep looking for the next until you are at the end of phrase words
