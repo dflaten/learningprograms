@@ -105,16 +105,12 @@ class PhraseTrigger(Trigger):
         textwords = text.split(string.punctuation)
         phrasewords = self.phrase.split()
         def search_for_phrase(mytext, myphrase):
-            if mytext == []:
-                return True
-            else:
-                for word in myphrase:
-                    if word in mytext:
-                        return search_for_phrase(mytext[word:], myphrase)
-                    else: 
-                        return False
-            return False
-        return search_for_phrase(textwords, phrasewords)
+            #we care about order though not just being in the list...
+            for word in myphrase:
+                if word in mytext:
+                    pass
+                else:
+                    return False
         #look for first word in phrasewords in textwords
         #then look for next words in remaining phrase words
         #then keep looking for the next until you are at the end of phrase words
