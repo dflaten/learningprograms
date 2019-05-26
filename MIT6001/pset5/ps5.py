@@ -102,28 +102,30 @@ class PhraseTrigger(Trigger):
     def is_phrase_in(self, text):
         text = text.lower()
         #Need to split but any punctuation or space
-        textwords = text.split(string.punctuation)
+        for ch in string.punctuation:
+            text = text.replace(ch, ' ')
+        textwords = text.split()
         phrasewords = self.phrase.split()
         def search_for_phrase(mytext, myphrase):
             if mytext == []:
+                return False
+            if myphrase ==[]:
                 return True
             else:
                 for word in myphrase:
                     if word in mytext:
-                        return search_for_phrase(mytext[word:], myphrase)
-            return True
-                    else: 
+                        return search_for_phrase(mytext[mytext.index(word)+1:], myphrase[myphrase.index(word)+1:])
+                    else:
                         return False
-            return False
         return search_for_phrase(textwords, phrasewords)
-        #look for first word in phrasewords in textwords
-        #then look for next words in remaining phrase words
-        #then keep looking for the next until you are at the end of phrase words
     
 def test_is_phrase_in():
     exampletrigger = PhraseTrigger('my phrase')
     assert exampletrigger.is_phrase_in('is.my.phrase.here')== True 
     
+def test_is_phrase_in_2():
+    exampletrigger = PhraseTrigger('my phrase')
+    assert exampletrigger.is_phrase_in('is..phrase.here my')== False 
 # Problem 3
 # TODO: TitleTrigger
 
