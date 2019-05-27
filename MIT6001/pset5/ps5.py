@@ -106,29 +106,33 @@ class PhraseTrigger(Trigger):
             text = text.replace(ch, ' ')
         textwords = text.split()
         phrasewords = self.phrase.split()
-        def search_for_phrase(mytext, myphrase):
-            if mytext == []:
+        for word in phrasewords:
+            if word in textwords:
+                textwords_extras_removed = textwords[textwords.index(word):textwords.index(word)+len(phrasewords)]
+                return textwords_extras_removed == phrasewords
+            else: 
                 return False
-            if myphrase ==[]:
-                return True
-            else:
-                for word in myphrase:
-                    if word in mytext:
-                        return search_for_phrase(mytext[mytext.index(word)+1:], myphrase[myphrase.index(word)+1:])
-                    else:
-                        return False
-        return search_for_phrase(textwords, phrasewords)
     
 def test_is_phrase_in():
     exampletrigger = PhraseTrigger('my phrase')
-    assert exampletrigger.is_phrase_in('is.my.phrase.here')== True 
+    assert exampletrigger.is_phrase_in('is!my!! !phrase!! !here')== True 
     
 def test_is_phrase_in_2():
     exampletrigger = PhraseTrigger('my phrase')
     assert exampletrigger.is_phrase_in('is..phrase.here my')== False 
 # Problem 3
-# TODO: TitleTrigger
+#Fires when a new's item title contains a given phrase
+class TitleTrigger(PhraseTrigger):
+    def evaluate(self, story):
+       return self.is_phrase_in(story.get_title())
 
+def test_TitleTrigger():
+    exclaim   = NewsStory('', 'Purple!!! Cow!!!', '', '', datetime.now())
+    plural    = NewsStory('', 'Purple cows are cool!', '', '', datetime.now())
+    cuddly = NewsStory('', 'The purple cow is soft and cuddly.', '', '', datetime.now())
+    separate  = NewsStory('', 'The purple blob over there is a cow.', '', '', datetime.now())
+    s2  = TitleTrigger('purple cow')
+    assert s2.evaluate(separate) == False 
 # Problem 4
 # TODO: DescriptionTrigger
 
