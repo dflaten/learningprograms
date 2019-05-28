@@ -142,24 +142,60 @@ class DescriptionTrigger(PhraseTrigger):
 
 # Problem 5
 class TimeTrigger(Trigger):
-    def __init__(self, time):
-        self.time = datetime.strptime(time, "%d %b %Y %H:%M:%S")
-        self.time.replace(tzinfo=ytz.timezone("EST"))
+    def __init__(self, init_time):
+        init_time = datetime.strptime(init_time, "%d %b %Y %H:%M:%S")
+        self.time = init_time.replace(tzinfo=pytz.timezone("EST"))
 
+    def get_time(self):
+        return self.time
 # Problem 6
-# TODO: BeforeTrigger and AfterTrigger
+class BeforeTrigger(TimeTrigger): 
+    def evaluate(self, story):
+        if self.time > story.get_pubdate(): 
+            return True
+        else:
+            return False
 
+class AfterTrigger(TimeTrigger):
+    def evaluate(self, story):
+        if self.time < story.get_pubdate(): 
+            return True
+        else:
+            return False
 
+def test_BeforeTrigger1():
+    s1 = BeforeTrigger('12 Oct 2016 23:59:59')
+    ancient_time = datetime(1987, 10, 15)
+    ancient_time = ancient_time.replace(tzinfo=pytz.timezone("EST"))
+    ancient = NewsStory('', '', '', '', ancient_time)
+    assert s1.evaluate(ancient) == True 
 # COMPOSITE TRIGGERS
 
 # Problem 7
-# TODO: NotTrigger
+class NotTrigger(Trigger):
+    def __init__(self, trigger):
+        self.trigger = trigger
+    
+    def evaluate(self, story):
+        return not self.trigger.evaluate(story)
 
 # Problem 8
-# TODO: AndTrigger
+class AndTrigger(Trigger):
+    def __init__(self, trigger_one, trigger_two):
+        self.trigger_one = trigger_one
+        self.trigger_two = trigger_two
+    def evaluate(self, story):
+        return self.trigger_one.evaluate(story) and self.trigger_two.evaluate(story)
+
 
 # Problem 9
 # TODO: OrTrigger
+class OrTrigger(Trigger):
+    def __init__(self, trigger_one, trigger_two):
+        self.trigger_one = trigger_one
+        self.trigger_two = trigger_two
+    def evaluate(self, story):
+        return self.trigger_one.evaluate(story) or  self.trigger_two.evaluate(story)
 
 
 #======================
@@ -173,11 +209,12 @@ def filter_stories(stories, triggerlist):
 
     Returns: a list of only the stories for which a trigger in triggerlist fires.
     """
-    # TODO: Problem 10
-    # This is a placeholder
-    # (we're just returning all the stories, with no filtering)
-    return stories
-
+    newstorylist = []
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story) == True:
+                newstorylist.append(story)
+    return newstorylist
 
 
 #======================
@@ -214,9 +251,9 @@ def main_thread(master):
     # A sample trigger list - you might need to change the phrases to correspond
     # to what is currently in the news
     try:
-        t1 = TitleTrigger("election")
-        t2 = DescriptionTrigger("Trump")
-        t3 = DescriptionTrigger("Clinton")
+        t1 = TitleTrigger("Japan")
+        t2 = DescriptionTrigger("death")
+        t3 = DescriptionTrigger("killing")
         t4 = AndTrigger(t2, t3)
         triggerlist = [t1, t4]
 
