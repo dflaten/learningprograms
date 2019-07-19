@@ -5,3 +5,5 @@ These are a series of python programs created as I was learning the Python progr
 #Classes Covered
 MIT 6.001
 Harvard CS50
+Nand2Tetris
+Duke - Java Programming and Software Engineering Fundamentals Specialization
