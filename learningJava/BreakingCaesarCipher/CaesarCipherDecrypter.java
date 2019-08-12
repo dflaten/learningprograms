@@ -32,9 +32,72 @@ public class CaesarCipherDecrypter {
 	return cc.encrypt(encrypted, 26-dkey);
     }
 
+    public String halfOfString(String message, int start){
+	String replacedMessage = message.replaceAll("[^a-zA-Z]", "");
+	StringBuilder halfString = new StringBuilder();
+	    for (int i = start; i< replacedMessage.length(); i+=2){
+		halfString.append(replacedMessage.charAt(i));
+	    }
+	return halfString.toString();
+    }
+
+    public int getKey(String s){
+        int [] letterCounts = countLetterOccurences(s);
+	WordLengths wl = new WordLengths();
+	int maxDex = wl.indexOfMax(letterCounts);
+	return maxDex;
+    }
+
+    public String decryptTwoKeys(String encrypted){
+	String encryptedHalf0 = halfOfString(encrypted, 0);
+	int zeroKey = getKey(encryptedHalf0);
+	System.out.println("Here is the zero key: " + zeroKey);
+	String decryptedHalf0 = decrypt(encryptedHalf0);
+
+	String encryptedHalf1 = halfOfString(encrypted, 1);
+	int oneKey = getKey(encryptedHalf1);
+	System.out.println("Here is the one key: " + oneKey);
+	String decryptedHalf1 = decrypt(encryptedHalf1);
+
+	String decryptedMessage = "";
+	int maxLoop = encryptedHalf0.length() > encryptedHalf1.length() ? encryptedHalf0.length() : encryptedHalf0.length();
+	
+	for (int i = 0; i < maxLoop; i++){
+            char firstChar = '\0';
+            char secondChar = '\0';
+	    if (i < encryptedHalf0.length()){
+		firstChar = decryptedHalf0.charAt(i);
+	    }
+	    if (i < encryptedHalf1.length()){
+		secondChar = decryptedHalf1.charAt(i);
+	    }
+            decryptedMessage = decryptedMessage + firstChar + secondChar;
+	}
+	return decryptedMessage;
+    }
+
+    public void testDecryptTwoKeys(){
+	String encryptedString = "Io iwjv jz dv bcm kjvammmikz mwju edbc twpz pvb wi awm v ncmxmqnm xvzog. TMGT TJCY!";
+	System.out.println("My decrypted string: " + decryptTwoKeys(encryptedString));
+    }
+
+    public void testGetKey(){
+        String encryptedMessage = "Hqfubsw pb phvvhhhhdjh.";
+	int key = getKey(encryptedMessage);
+	System.out.println("Should be H or 7, is: " + key);
+    }
+
     public void testDecrypt(){
 	String encryptedString = "Hqfubsw pb phvvdjh.";
 	System.out.println("My decrypted string: " + decrypt(encryptedString));
+    }
+
+    public void testHalfOfString(){
+	String encryptedString ="abcdefghijklmN.opqrstuvwxyz";
+	String halfString0 = halfOfString(encryptedString, 0);
+	String halfString1 = halfOfString(encryptedString, 1);
+	System.out.println("First half from zero: " + halfString0);
+	System.out.println("Second half from one: " + halfString1);
     }
 
 }

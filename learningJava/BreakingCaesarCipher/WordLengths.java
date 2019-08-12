@@ -41,6 +41,12 @@ public class WordLengths {
         }
 	return maxIndex;
     }
+    
+    public void testIndexOfMax(){
+	int[] test = {1,3,5,7,10,4,3};
+        int mymax = indexOfMax(test);
+	System.out.println("The index with the largest should be 4, it is: " + mymax);
+    }
 
     public void testCountWordLengths(){
         FileResource fr = new FileResource();
