@@ -60,6 +60,6 @@ public class CaesarCipher {
     public void testEncryptTwoKeys(){
 	System.out.println("Encrypt my message. Encryption: " + encryptTwoKeys("Encrypt my message.", 3, 4));
 	System.out.println("First Legion Encryption: " + encryptTwoKeys("First Legion", 23, 17));
-	System.out.println(encryptTwoKeys("At noon be in the confereeeeeeence room with your hat on for a surprise party. YELL LOUD!", 8, 21));
+	System.out.println(encryptTwoKeys("At noon be in the confeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerence room with your hat on for a surprise party. YELL LOUD!", 8, 21));
     }
 }

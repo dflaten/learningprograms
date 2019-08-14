@@ -9,6 +9,7 @@ public class CaesarCipherDecrypter {
 
     public int [] countLetterOccurences(String message){
 	String alpha = "abcdefghijklmnopqrstuvwxyz";
+	message = message.toLowerCase();
 	int [] counts = new int[26];
 	for (int k=0; k<message.length(); k++){
 	    char ch = Character.toLowerCase(message.charAt(k));
@@ -33,10 +34,9 @@ public class CaesarCipherDecrypter {
     }
 
     public String halfOfString(String message, int start){
-	String replacedMessage = message.replaceAll("[^a-zA-Z]", "");
 	StringBuilder halfString = new StringBuilder();
-	    for (int i = start; i< replacedMessage.length(); i+=2){
-		halfString.append(replacedMessage.charAt(i));
+	    for (int i = start; i< message.length(); i+=2){
+		halfString.append(message.charAt(i));
 	    }
 	return halfString.toString();
     }
@@ -49,12 +49,16 @@ public class CaesarCipherDecrypter {
     }
 
     public String decryptTwoKeys(String encrypted){
+	System.out.println("Here is the encrypted whole String: " + encrypted);
+
 	String encryptedHalf0 = halfOfString(encrypted, 0);
+	System.out.println("Here is the zero half encrypted: " + encryptedHalf0 );
 	int zeroKey = getKey(encryptedHalf0);
 	System.out.println("Here is the zero key: " + zeroKey);
 	String decryptedHalf0 = decrypt(encryptedHalf0);
 
 	String encryptedHalf1 = halfOfString(encrypted, 1);
+	System.out.println("Here is the one half encrypted: " + encryptedHalf1 );
 	int oneKey = getKey(encryptedHalf1);
 	System.out.println("Here is the one key: " + oneKey);
 	String decryptedHalf1 = decrypt(encryptedHalf1);
@@ -77,7 +81,8 @@ public class CaesarCipherDecrypter {
     }
 
     public void testDecryptTwoKeys(){
-	String encryptedString = "Io iwjv jz dv bcm kjvammmikz mwju edbc twpz pvb wi awm v ncmxmqnm xvzog. TMGT TJCY!";
+	String encryptedString = "Io iwjv jz dv bcm kjvamzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmmmikz mwju edbc twpz pvb wi awm v ncmxmqnm xvzog. TMGT TJCY!";
+	//String encryptedString = "Io iwjv jz dv bcm kjvammmikz mwju edbc twpz pvb wi awm v ncmxmqnm xvzog. TMGT TJCY!";
 	System.out.println("My decrypted string: " + decryptTwoKeys(encryptedString));
     }
 
