@@ -28,5 +28,12 @@ public class Tester
 	System.out.println("Should be 2, is: " + test.countUniqueIPsInRange(300,399));
     }
     
-   
+    public void testCountVisitsPerIP(){
+	LogAnalyzer test = new LogAnalyzer();
+	test.readFile("/Users/dflaten/Projects/learningprograms/learningJava/WebLogProgram/short-test_log");
+        HashMap<String, Integer> testHash = test.countVisitsPerIP();
+	System.out.println("Size of Hash is: " + testHash.size() +  " Next Should say 3: " + testHash.get("152.3.135.44"));
+	System.out.println("Largest number of visits by single IP: " + test.mostNumberVisitsByIP(testHash));
+	System.out.println(test.iPsMostVisits(testHash));
+    }
 }
