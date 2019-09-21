@@ -1,4 +1,6 @@
 from Parser import constructor, commandType, dest, comp, jump
+import sys
+import os
 
 def main():
     #Get list of lines from file loaded in commandline argument
@@ -31,7 +33,13 @@ def main():
             else:
                 binary_c_line = '111' + comp(compjump) + destline + jump('null')
             converted_assembly.append(binary_c_line)
+    #Need to figure out how to keep path but change extention
+    path=os.path.split(sys.argv[1])
+    base=os.path.splitext(os.path.basename(sys.argv[1]))[0]
+    MyFile=open(path[0] +'/'+ base + ".hack",'w')
+    print(path[0]+base)
     for blines in converted_assembly:
-        print(blines)
+        print (blines, file=MyFile)
+    MyFile.close()
 if __name__ == "__main__":
     main()
