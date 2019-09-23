@@ -1,5 +1,7 @@
 #Creates a new empty symbol table
 def Constructor():
+    symbolTable = {}
+    return symbolTable
 
 #String, int->void
 #Adds the pair (symbol(String), address(int)) to the table. 

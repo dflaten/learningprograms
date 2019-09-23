@@ -1,26 +1,21 @@
 import sys
+import os
 
 # Input File -> List
-# Opens input file/stream, places lines into list and returns list
-def constructor():
+# Opens input file/stream given in command line
+# and places lines into list and returns list
+def convertfiletolist():
     with open(sys.argv[1], 'r') as my_file:
         assemblylines = my_file.readlines()
     assemblylines = [x.strip() for x in assemblylines] 
     return assemblylines
 
-# Nothing -> Boolean
-# Are there more commands in the input?
-# Assuming this function will not be needed.
-def hasMoreCommands():
-    return True
-
-# Nothing -> Nothing
-# Reads the next command from the input and makes it
-# the current command. Should be called only if the
-# if hasMoreCommands() is true. Intitially there is
-# no current command.
-def advance():
-    return null
+def convertlisttofile(converted_assembly):
+    base = os.path.splitext(sys.argv[1])[0]
+    newfile = open((base + ".hack"), "w")
+    for blines in converted_assembly:
+        print (blines, file=newfile)
+    newfile.close()
 
 # String -> Strint (Command)
 # Returns the type of the current command.
