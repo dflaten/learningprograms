@@ -1,4 +1,5 @@
 from Parser import convertfiletolist, convertlisttofile, commandType, dest, comp, jump
+from SymbolTable import SymbolTable
 import sys
 
 def main():
@@ -13,6 +14,11 @@ def main():
         assemblylines_nocomments.append(line)
     #Remove blank lines.
     assemblylines_nocomments = list(filter(None, assemblylines_nocomments))
+    #new symboltable
+    symbolDict = SymbolTable() 
+    #add all symbols to table
+    for line in assemblylines_nocomments: 
+
     #convert lines to binary
     for line in assemblylines_nocomments:
         cmdtype =  commandType(line)
