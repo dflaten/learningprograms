@@ -16,9 +16,12 @@ def main():
     assemblylines_nocomments = list(filter(None, assemblylines_nocomments))
     #new symboltable
     symbolDict = SymbolTable() 
-    #add all symbols to table
+    #first pass, keep track of which ROM address 
     for line in assemblylines_nocomments: 
-
+        cmdtype =  commandType(line)
+        if cmdtype == "A_COMMAND":
+        #if the line has a symbol add it to the SymbolTable with the appropriate address
+        if cmdtype == "C_COMMAND":
     #convert lines to binary
     for line in assemblylines_nocomments:
         cmdtype =  commandType(line)
@@ -27,7 +30,7 @@ def main():
             binary_number = "{0:015b}".format(line)
             binary_a_line = '0' + str(binary_number) 
             converted_assembly.append(binary_a_line)
-        elif cmdtype == "C_COMMAND":
+        if cmdtype == "C_COMMAND":
             if "=" in line:
                 d, compjump = line.split("=",1)
                 destline = dest(d)

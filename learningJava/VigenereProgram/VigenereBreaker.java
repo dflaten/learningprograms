@@ -25,9 +25,8 @@ public class VigenereBreaker {
 	FileResource fr = new FileResource("/Users/dflaten/Projects/learningprograms/learningJava/VigenereProgram/messages/VigenereTestData/athens_keyflute.txt");
 	FileResource frd = new FileResource("/Users/dflaten/Projects/learningprograms/learningJava/VigenereProgram/dictionaries/English");
 	String encrypted = fr.asString();
-	int[] keys = tryKeyLength(encrypted, 5, 'e');
-	VigenereCipher vc = new VigenereCipher(keys);
-	String decrypted = vc.decrypt(encrypted);
+	HashSet<String> dictionary = readDictionary(frd);
+	String decrypted = breakForLanguage(encrypted, dictionary); 
 	System.out.println(decrypted);
     }
 
@@ -56,9 +55,31 @@ public class VigenereBreaker {
 	return validWords.size();
     }
 
-    public String breakForLanguage(String encyrpted, HashSet<String> dictionary){
-        return "Complete Me!";	
+    public String breakForLanguage(String encrypted, HashSet<String> dictionary){
+	int mostWords = 0;
+	int[] bestKeys = new int[0];
+        for (int k=1; k < 101; k++){
+            int[] keys = tryKeyLength(encrypted, k, 'e');
+	    VigenereCipher vc = new VigenereCipher(keys);
+	    String decrypted = vc.decrypt(encrypted);
+	    int curWords = countWords(decrypted, dictionary); 
+	    if (curWords > mostWords){
+                mostWords = curWords;
+		bestKeys = keys;
+	    }
+	}
+	VigenereCipher vc = new VigenereCipher(bestKeys);
+	return vc.decrypt(encrypted);
     }
+
+    public void testBreakForLanguage(){
+	FileResource fr = new FileResource("/Users/dflaten/Projects/learningprograms/learningJava/VigenereProgram/messages/VigenereTestData/athens_keyflute.txt");
+	String encrypted = fr.asString();
+        FileResource dict = new FileResource("/Users/dflaten/Projects/learningprograms/learningJava/VigenereProgram/dictionaries/English");
+	String decrypted = breakForLanguage(encrypted, readDictionary(dict));
+        System.out.println(decrypted);	
+    }
+
     public void testSliceString(){
 	System.out.println(sliceString("abcdefghijklm", 0, 3));
 	System.out.println(sliceString("abcdefghijklm", 1, 3));

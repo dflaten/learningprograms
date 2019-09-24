@@ -2,7 +2,12 @@
 class SymbolTable:
 
     def __init__(self):
-        SymbolTable.symboDict = {}
+        SymbolTable.symboDict = {'SP':0,
+                                 'LCL':1,
+                                 'ARG':2,
+                                 'THIS':3,
+                                 'THAT':4,
+                                 'R0':}
 
     #String, int->void
     #Adds the pair (symbol(String), address(int)) to the table. 
